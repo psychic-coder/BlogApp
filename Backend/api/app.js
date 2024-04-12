@@ -32,7 +32,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/user',userRoute);
 app.use('/api/auth',authRoute)
 
+//its a custom middleware  we created for showing the error
+app.use((err,req,res,next)=>{
+    const statusCode=err.statusCode||500;
+    const message=err.message || 'Internal Server error';
+    res.status(statusCode).json({
+        success:false,
+        statusCode,
+        message
+    })
 
+})
 
 
 const port =process.env.PORT||5000;
