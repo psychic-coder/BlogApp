@@ -1,12 +1,17 @@
-import { Button, Navbar, TextInput } from "flowbite-react";
+import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 function Header() {
+
+    // we are getting hold of the current the user over here
+    const {currentUser}= useSelector(state=>state.user);
+
     {/*useLocation is used to get the url of the page we're currently in*/}
     const path=useLocation().pathname;
   return (
@@ -36,11 +41,40 @@ function Header() {
         <Button className="w-12,h-10 hidden sm:inline" color="gray" pill>
           <FaMoon />
         </Button>
-        <Link to="/sign-in">
-          <Button gradientDuoTone="purpleToBlue" outline  pill>
-            Sign-in
-          </Button>
-        </Link>
+        {currentUser ? (
+        <Dropdown
+        arrowIcon={false}
+        inline
+        label={
+          <Avatar
+           alt='user'
+           img={currentUser.profilePicture}
+           rounded
+          />
+        }
+        >
+         <Dropdown.Header>
+          <span className="block text-sm ">@{currentUser.username}</span>
+          <span className="block text-sm font-medium truncate ">{currentUser.email}</span>
+         </Dropdown.Header>
+         <Link to={'/dashboard?tab=profile'}>
+            <Dropdown.Item>
+              Profile
+            </Dropdown.Item>
+         </Link>
+         <Dropdown.Divider/>
+         <Dropdown.Item>
+            Sign Out
+         </Dropdown.Item>
+        </Dropdown>
+        ):(
+           <Link to="/sign-in">
+           <Button gradientDuoTone="purpleToBlue" outline  pill>
+             Sign-in
+           </Button>
+         </Link>
+        )}
+       
         <Navbar.Toggle/>{/*the navbar contents is from the Navbar.collapse*/}
       </div>
       {/*the navbar is imported from the flowbite*/}
