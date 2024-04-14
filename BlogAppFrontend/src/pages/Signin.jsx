@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
+import { signInStart,signInSuccess,signInFailure} from "../redux/user/userSlice";
+import {  useDispatch,useSelector } from "react-redux";
 
 function Signin() {
   const [formData, setFormData] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  
+  //user is the name we have given in the userSlice.js file
+  const {loading,error:errorMessage}=useSelector(state=>state.user)
+
+  const dispatch=useDispatch();
 
   //this hook is used to navigate to a different page
   const navigate = useNavigate();
@@ -25,13 +30,18 @@ function Signin() {
 
     //if the form is empty we are returning inplace of submiting the data
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill all the details .");
+      return dispatch(signInFailure('Please fill out all the fields'));
     }
 
     //overhere we are sending the data to the backenend server of the page
     try {
-      setLoading(true);
-      setErrorMessage(null);
+     /* setLoading(true);
+      setErrorMessage(null);*/
+
+
+      //in the below we are using the functions from the store.js
+      dispatch(signInStart());
+
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -44,18 +54,16 @@ function Signin() {
       //for this we're are using the "success" we are receiving from the customMiddleware we created in the app.js
       const data = await res.json();
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        dispatch(signInFailure(data.message));
       }
-      //if we have no error message then we use setLoading to false
-      setLoading(false);
       //if the response is ok , then we are navigating to the sign in page
       if (res.ok) {
+        dispatch(signInSuccess(data))
         navigate("/");
       }
     } catch (error) {
       //the below error is in the client-side , this error takes place if the user is not having interned or something
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(signInFailure(error.message));
     }
   };
 

@@ -50,7 +50,7 @@ export const signin=async (req,res,next)=>{
     {/*we added return so it does not goes to the next line*/}
     const validPassword=bcryptjs.compareSync(password,validUser.password);
     if(!validPassword){
-     return next(errorHandler(400,'Invalid User'))
+     return next(errorHandler(400,'Invalid Password'))
     }
 
     //if everything is correct then we are creating a token
