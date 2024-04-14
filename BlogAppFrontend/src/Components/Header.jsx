@@ -2,15 +2,20 @@ import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
+import { FaMoon,FaSun } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { toggleTheme } from "../redux/theme/themeSlice";
 
 
 function Header() {
-
+        const dispatch=useDispatch()
     // we are getting hold of the current the user over here
     const {currentUser}= useSelector(state=>state.user);
+
+    //in the below code we're getting hold of the current theme
+    //where theme is the name of the themeSlice
+    const {theme} =useSelector((state)=>state.theme);
 
     {/*useLocation is used to get the url of the page we're currently in*/}
     const path=useLocation().pathname;
@@ -38,8 +43,10 @@ function Header() {
         <AiOutlineSearch />
       </Button>
       <div className=" flex gap-2 md:order-2">
-        <Button className="w-12,h-10 hidden sm:inline" color="gray" pill>
-          <FaMoon />
+        <Button className="w-12,h-10 hidden sm:inline" color="gray" onClick={()=>{
+          dispatch(toggleTheme())
+        }} pill>
+        {theme=== 'light'?<FaMoon/>:<FaSun/>}
         </Button>
         {currentUser ? (
         <Dropdown
