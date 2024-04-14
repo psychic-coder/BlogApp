@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 
 function SignUp() {
@@ -7,8 +7,8 @@ function SignUp() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  //this hook is used to navigate to a different page 
-  const navigate=useNavigate();
+  //this hook is used to navigate to a different page
+  const navigate = useNavigate();
 
   //in the below we are getting hold of the value we are typing in the  input box
   //.trim is used to remove the extra spaces between the letters
@@ -31,7 +31,7 @@ function SignUp() {
     //overhere we are sending the data to the backenend server of the page
     try {
       setLoading(true);
-      setErrorMessage(null)
+      setErrorMessage(null);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -49,12 +49,11 @@ function SignUp() {
       //if we have no error message then we use setLoading to false
       setLoading(false);
       //if the response is ok , then we are navigating to the sign in page
-      if(res.ok){
-        navigate('/sign-in')
+      if (res.ok) {
+        navigate("/sign-in");
       }
-    }
-    //the below error is in the client-side , this error takes place if the user is not having interned or something
-    catch (error) {
+    } catch (error) {
+      //the below error is in the client-side , this error takes place if the user is not having interned or something
       setErrorMessage(error.message);
       setLoading(false);
     }
@@ -109,13 +108,19 @@ function SignUp() {
               />
             </div>
             {/*while we're loading the page the below button is gonna get disabled*/}
-            <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
-              { loading? (
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
                 <div>
-               <Spinner size='sm'/>
-               <span className="pl-3">Loading</span>
-               </div>
-              ): 'SignUp' }
+                  <Spinner size="sm" />
+                  <span className="pl-3">Loading</span>
+                </div>
+              ) : (
+                "SignUp"
+              )}
             </Button>
           </form>
           <div className="flex gap-2 text-sm mt-5">
