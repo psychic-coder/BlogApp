@@ -26,6 +26,7 @@ app.use(logger('dev'));
 //this is used to send data to the json
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 
 //we have imported the userRoutes first on the top
