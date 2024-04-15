@@ -1,11 +1,10 @@
+import { Sidebar } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import DashSidebar from '../Components/DashSidebar'
-import DashProfile from '../Components/DashProfile'
+import {HiArrowSmRight, HiUser} from 'react-icons/hi'
+import { Link, useLocation } from 'react-router-dom'
 
-function DashBoard() {
-  //using the useLocation hook, we can access and utilize the current URL information within your React components
-  const location=useLocation()
+function DashSidebar() {
+    const location=useLocation()
 
   // to the know the tab we are currently in
   const [tab,setTab]=useState('')
@@ -28,15 +27,21 @@ function DashBoard() {
   },[location.search])
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-        <div className="md:w-56 ">{/*sidebar*/}
-          <DashSidebar/>
-        </div>
-        {/*profile..*/}
-        {tab==='profile' && 
-        <DashProfile/>}
-    </div>
+    <Sidebar className="w-full md:w-56">
+       <Sidebar.Items>
+         <Sidebar.ItemGroup>
+            <Link to="/dashboard?tab=profile">
+            <Sidebar.Item active={tab==='profile'} icon={HiUser} label={"User"} labelColor='dark'>
+                Profile
+            </Sidebar.Item>
+            </Link>
+            <Sidebar.Item  icon={HiArrowSmRight} className="cursor-pointer" >
+                SignOut
+            </Sidebar.Item>
+         </Sidebar.ItemGroup>
+       </Sidebar.Items>
+    </Sidebar>
   )
 }
 
-export default DashBoard
+export default DashSidebar
