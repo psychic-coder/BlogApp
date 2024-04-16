@@ -16,7 +16,8 @@ import {
   updateFailure,
   deleteUserStart,
   deleteUserFailure,
-  deleteUserSuccess
+  deleteUserSuccess,
+  signOutSuccess
 } from "../redux/user/userSlice";
 
 import app from "../firebase";
@@ -156,6 +157,25 @@ const DashProfile = () => {
     }
   };
 
+  const handleSignOut= async ()=>{
+        try {
+            const res=await fetch('/api/user/signout',{
+              method:'POST',   
+            })
+              const data=res.json();
+              if(!res.ok){
+                console.log(data.message)
+              }
+              else{
+                dispatch(signOutSuccess());
+              }
+
+
+        } catch (error) {
+          console.log(error)
+        }
+  }
+
 
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
@@ -237,7 +257,7 @@ const DashProfile = () => {
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="cursor-pointer">Sign Out</span>
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">
