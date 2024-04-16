@@ -1,6 +1,6 @@
 import { Alert, Button, TextInput } from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import {
@@ -9,88 +9,126 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
+import { updateStart, updateSuccess, updateFailure } from "../redux/user/userSlice";
 
 import app from "../firebase";
 
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
-
-  // Call the useState hook and store the result in a variable
+  const dispatch = useDispatch();
 
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
+  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
+  const [updateUserError, setUpdateUserError] = useState(null);
+  const [formData, setFormData] = useState({
+    username: currentUser.username,
+    email: currentUser.email,
+    password: '', // You might want to remove this line if you don't intend to update the password through this form
+    profilePicture: currentUser.profilePicture
+  });
+  const [imageFileUploading, setImageFileUploading] = useState(false);
 
-
-  //as we'll click on the profile image it should open the the input file
   const filePickerRef = useRef();
 
   const handleImageChange = (e) => {
-    // as we are uploading only one file, so we are putting 0
     const file = e.target.files[0];
 
     if (file) {
       setImageFile(file);
-      // the below line is used to create the file url
       setImageFileUrl(URL.createObjectURL(file));
     }
   };
+
   const uploadImage = async () => {
-    // // allow write: if firestore.get(
-    // //    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
-    // service firebase.storage {
-    //   match /b/{bucket}/o {
-    //     match /{allPaths=**} {
-    //       allow read;
-    //        allow write:if
-    //         request.resource.size<2*1024*1024 &&
-    //         request.resource.contentType.matches('image/.*')
-
-    //     }
-    //   }
-    // }
-
-    //the app is the file we have exported from firebase
+    setImageFileUploading(true);
     setImageFileUploadError(null);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + imageFile.name;
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
     uploadTask.on("state_changed",
-     (snapshot) => {
-      //this creates the uploading effect while we change the image
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      setImageFileUploadProgress(progress.toFixed(0)),
-        (error) => {
-          setImageFileUploadError(
-            "could not upload image (File must be less than 2MB)"
-          );
-          setImageFileUploadProgress(null);
-          setImageFile(null);
-          setImageFileUrl(null);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setImageFileUrl(downloadURL);
-          });
-        }
-    });
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageFileUploadProgress(progress.toFixed(0));
+      },
+      (error) => {
+        setImageFileUploadError("Could not upload image (File must be less than 2MB)");
+        setImageFileUploadProgress(null);
+        setImageFile(null);
+        setImageFileUrl(null);
+        setImageFileUploading(false);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageFileUrl(downloadURL);
+          setFormData(prevState => ({
+            ...prevState,
+            profilePicture: downloadURL
+          }));
+          setImageFileUploading(false);
+        });
+      }
+    );
   };
 
-  //console.log(imageFile, imageFileUrl);
   useEffect(() => {
     if (imageFile) {
       uploadImage();
     }
   }, [imageFile]);
 
-  console.log(imageFileUploadError);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+  console.log(formData);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setUpdateUserError(null);
+    setUpdateUserSuccess(null);
+    if (Object.keys(formData).length === 0) {
+      setUpdateUserError('No changes made');
+      return;
+    }
+    if (imageFileUploading) {
+      setUpdateUserError('Please wait for image to upload');
+      return;
+    }
+    if(imageFileUploading){
+      return;
+    }
+    try {
+      dispatch(updateStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+        setUpdateUserError(data.message);
+      } else {
+        dispatch(updateSuccess(data));
+        setUpdateUserSuccess("User's profile updated successfully");
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+      setUpdateUserError(error.message);
+    }
+  };
+
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
-      <form className="flex flex-col gap-4" action="">
-        {/* "image/*" this shows us all type of image   */}
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           hidden
           type="file"
@@ -98,62 +136,61 @@ const DashProfile = () => {
           onChange={handleImageChange}
           ref={filePickerRef}
         />
-
-        {/*as we'll click on this div it will initiate the input*/}
         <div
           className="relative w-32 h-32 self-center cursor-pointer shadow-md rounded-full overflow-hidden"
           onClick={() => {
             filePickerRef.current.click();
           }}
         >
-
-            {imageFileUploadProgress &&imageFileUploadProgress<100 &&  (
-                <CircularProgressbar value={imageFileUploadProgress || 0} 
-                text={`${imageFileUploadProgress}%`}
-                strokeWidth={5}
-                styles={{
-                    root:{
-                        width:'100%',
-                        height:'100%',
-                        position:'absolute',
-                        top:0,
-                        left:0
-                    },
-                    path:{
-                        stroke:`rgba(62,152,199,${imageFileUploadProgress/100})`,
-                    }
-
-                }}
-                />
-            ) }
+          {imageFileUploadProgress && imageFileUploadProgress < 100 && (
+            <CircularProgressbar
+              value={imageFileUploadProgress || 0}
+              text={`${imageFileUploadProgress}%`}
+              strokeWidth={5}
+              styles={{
+                root: {
+                  width: '100%',
+                  height: '100%',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0
+                },
+                path: {
+                  stroke: `rgba(62,152,199,${imageFileUploadProgress / 100})`,
+                },
+              }}
+            />
+          )}
           <img
-            src={imageFileUrl || currentUser.profilePicture}
+            src={imageFileUrl || formData.profilePicture}
             alt="user"
-            className={`${imageFileUploadProgress && imageFileUploadProgress<100 && 'opacity-60'} w-full h-full object-cover border-8 border-[lightgray] rounded-full `}
+            className={`${imageFileUploadProgress && imageFileUploadProgress < 100 && 'opacity-60'} w-full h-full object-cover border-8 border-[lightgray] rounded-full `}
           />
         </div>
-        {imageFileUploadError && 
-          <Alert color="failure">{imageFileUploadError}</Alert>
-        }
+        {imageFileUploadError && <Alert color="failure">{imageFileUploadError}</Alert>}
 
         <TextInput
           type="text"
           id="username"
           placeholder="username"
-          defaultValue={currentUser.username}
+          value={formData.username}
+          onChange={handleChange}
         />
         <TextInput
           type="email"
           id="email"
           placeholder="email"
-          defaultValue={currentUser.email}
+          value={formData.email}
+          onChange={handleChange}
         />
+        {/* You may or may not want to allow password update */}
         <TextInput
-          type="text"
+          type="password"
           id="password"
           placeholder="password"
-          defaultValue="*********"
-        />
+          value={formData.password}
+          onChange={handleChange}
+        /> 
         <Button type="submit" gradientDuoTone="purpleToBlue" outline>
           Update
         </Button>
@@ -162,6 +199,18 @@ const DashProfile = () => {
         <span className="cursor-pointer">Delete Account</span>
         <span className="cursor-pointer">Sign Out</span>
       </div>
+     {updateUserSuccess && (
+      <Alert color="success" className="mt-5">
+        {updateUserSuccess}
+      </Alert>
+     )}
+     {
+      updateUserError && (
+        <Alert color="failure" className="mt-5">
+          {updateUserError}
+        </Alert>
+      )
+     }
     </div>
   );
 };
