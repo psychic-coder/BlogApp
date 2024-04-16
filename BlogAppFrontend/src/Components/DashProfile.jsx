@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import {Link} from "react-router-dom"
 import {
   getStorage,
   ref,
@@ -23,7 +24,7 @@ import {
 import app from "../firebase";
 
 const DashProfile = () => {
-  const { currentUser,error } = useSelector((state) => state.user);
+  const { currentUser,error,loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const [imageFile, setImageFile] = useState(null);
@@ -249,9 +250,23 @@ const DashProfile = () => {
           value={formData.password}
           onChange={handleChange}
         />
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
+        <Button type="submit" gradientDuoTone="purpleToBlue" disabled={loading || imageFileUploading } outline>
+          {loading? 'loading...':'Update'}
         </Button>
+        {
+          currentUser.isAdmin && (
+            <Link to={'/create-post'}>
+            <Button
+            type='button'
+            gradientDuoTone='purpleToPink'
+            className="w-full"
+            >
+              Create a post
+            </Button>
+            </Link>
+            
+          )
+        }
       </form>
       <div className="text-red-500 flex justify-between mt-5 ">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">

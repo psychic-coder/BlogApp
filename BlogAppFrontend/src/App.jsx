@@ -9,6 +9,10 @@ import Projects from "./pages/Projects";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import PrivateRoute from "./Components/PrivateRoute";
+import OnlyAdmin from "./Components/OnlyAdmin";
+import CreatePost from "./pages/CreatePost";
+
+
 
 function App() {
   return (
@@ -22,6 +26,10 @@ function App() {
         {/*we are making the dashboard private so that the people who are signed in can only access it*/}
         <Route element={<PrivateRoute/>}>
         <Route path="/dashboard" element={<DashBoard />} />
+        </Route>
+
+        <Route element={<OnlyAdmin />} >
+        <Route path="/create-post" element={<CreatePost />} />
         </Route>
         <Route path="/projects" element={<Projects />} />
       </Routes>
