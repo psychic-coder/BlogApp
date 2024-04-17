@@ -6,6 +6,7 @@ import mongoose from 'mongoose' ;
 import dotenv from 'dotenv' ;
 import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js' 
+import postRoute from './routes/postRoute.js'
 
 
 dotenv.config();
@@ -31,7 +32,8 @@ app.use(cookieParser());
 
 //we have imported the userRoutes first on the top
 app.use('/api/user',userRoute);
-app.use('/api/auth',authRoute)
+app.use('/api/auth',authRoute);
+app.use('/api/post',postRoute);
 
 //its a custom middleware  we created for showing the error
 app.use((err,req,res,next)=>{
