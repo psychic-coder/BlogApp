@@ -7,6 +7,7 @@ function DashPosts() {
   //overhere we are getting a=hold of all the posts created by this admin
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
+  const [showMore, setShowMore] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -15,6 +16,9 @@ function DashPosts() {
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
+          if (data.length < 9) {
+            setShowMore(false);
+          }
         }
       } catch (error) {
         console.log(error.message);
@@ -25,7 +29,27 @@ function DashPosts() {
     }
   }, [currentUser._id]);
 
-  console.log(userPosts);
+  const handleShowMore = async () => {
+    const startIndex = userPosts.length;
+    try {
+      //overhere we're getting hold of the index of the data present after the current index its showing
+      const res = await fetch(
+        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        //overhere we are keeping the previous data and adding the new data after that
+        setUserPosts((prev) => [...prev, ...data.posts]);
+        if (data.posts.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //console.log(userPosts);
   // userPosts.map((post)=>{
   //   console.log(post.updatedAt)
   //   console.log(post.slug)
@@ -92,6 +116,14 @@ function DashPosts() {
               ))}
             </Table.Body>
           </Table>
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="w-full text-teal-500 self-center text-sm py-7"
+            >
+              Show More
+            </button>
+          )}
         </>
       ) : (
         <p>You have no posts yet</p>
