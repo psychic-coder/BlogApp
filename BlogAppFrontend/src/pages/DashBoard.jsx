@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import DashSidebar from '../Components/DashSidebar'
 import DashProfile from '../Components/DashProfile'
 import DashPosts from '../Components/DashPosts'
+import DashUsers from '../Components/DashUsers'
 
 function DashBoard() {
   //using the useLocation hook, we can access and utilize the current URL information within your React components
@@ -38,6 +39,10 @@ function DashBoard() {
         <DashProfile/>}
         {tab==='posts' &&
         <DashPosts/>
+        }
+        {
+          tab==='users' &&
+          <DashUsers/>
         }
     </div>
   )
