@@ -50,8 +50,23 @@ function DashUsers() {
     }
   };
 
-  const handleDeleteUser=()=>{
-
+  const handleDeleteUser=async ()=>{
+   try {
+        const res=await fetch(`/api/user/delete/${userIdtoDelete}`,{
+            method:'DELETE',
+        })
+        const data= await res.json();
+        if(res.ok){
+            setUsers((prev)=>prev.filter((user)=>
+                user._id!==userIdtoDelete
+            ))
+            setShowModal(false)
+        }else{
+            console.log(data.message);
+        }
+   } catch (error) {
+    console.log(error)
+   }
   }
   //console.log(userPosts);
   // userPosts.map((post)=>{

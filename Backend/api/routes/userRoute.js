@@ -13,5 +13,6 @@ router.post('/signout',signout);
 router.get('/getusers',verifyToken,getUsers)
 
 
+
 //we also have to import the user.controller in app.js
 export default router;
