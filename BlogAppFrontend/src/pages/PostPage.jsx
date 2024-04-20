@@ -2,6 +2,7 @@ import { Button, Spinner } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CallToAction from "../Components/CallToAction";
+import CommentSection from "../Components/CommentSection";
 
 function PostPage() {
   //using the below hook we're getting hold of the slug value from the url
@@ -9,7 +10,7 @@ function PostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
-  
+  //console.log(post)
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -61,6 +62,7 @@ function PostPage() {
     <div className="max-w-4xl mx-auto w-full  ">
     <CallToAction/>
     </div>
+    <CommentSection postId={post._id}/>
   </main>;
 }
 

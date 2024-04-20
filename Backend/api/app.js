@@ -7,7 +7,7 @@ import dotenv from 'dotenv' ;
 import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js' 
 import postRoute from './routes/postRoute.js'
-
+import commentRoute from './routes/commentRoute.js'
 
 dotenv.config();
 
@@ -34,6 +34,7 @@ app.use(cookieParser());
 app.use('/api/user',userRoute);
 app.use('/api/auth',authRoute);
 app.use('/api/post',postRoute);
+app.use('/api/comment', commentRoute);
 
 //its a custom middleware  we created for showing the error
 app.use((err,req,res,next)=>{
