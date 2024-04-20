@@ -63,6 +63,7 @@ function DashUsers() {
             setShowModal(false)
         }else{
             console.log(data.message);
+            
         }
    } catch (error) {
     console.log(error)

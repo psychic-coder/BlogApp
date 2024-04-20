@@ -12,7 +12,7 @@ import themeReducer from './theme/themeSlice';
 const rootReducer=combineReducers({
   user:userReducer,
   theme:themeReducer
-});
+});  
 
 
  const persistConfig={

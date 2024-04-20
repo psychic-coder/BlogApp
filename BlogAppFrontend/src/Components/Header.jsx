@@ -36,9 +36,9 @@ function Header() {
       console.log(error);
     }
   };
-  {
-    /*useLocation is used to get the url of the page we're currently in*/
-  }
+  
+    /*useLocation is used to get the url of the page we're currently in , it gives the url after the part of the local host */
+  
   const path = useLocation().pathname;
   return (
     <Navbar className="border-b-2">
