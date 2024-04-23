@@ -6,8 +6,8 @@ import Comment from "./Comment";
 import { useNavigate } from "react-router-dom";
 
 function CommentSection({ postId }) {
-  const navigate=useNavigate();
- const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
@@ -34,7 +34,7 @@ function CommentSection({ postId }) {
       if (res.ok) {
         setComment("");
         setCommentError(null);
-        setComments([data,...comments]);
+        setComments([data, ...comments]);
       }
     } catch (error) {
       setCommentError(error.message);
@@ -58,11 +58,11 @@ function CommentSection({ postId }) {
   const handleLike = async (commentId) => {
     try {
       if (!currentUser) {
-        navigate('/sign-in');
+        navigate("/sign-in");
         return;
       }
       const res = await fetch(`/api/comment/likeComment/${commentId}`, {
-        method: 'PUT',
+        method: "PUT",
       });
       if (res.ok) {
         const data = await res.json();
@@ -83,6 +83,17 @@ function CommentSection({ postId }) {
     }
   };
 
+  const handleEdit = async (comment, editedContent) => {
+    try {
+      setComments(
+        comments.map((c) =>
+          c._id === comment._id ? { ...c, content: editedContent } : c
+        )
+      );
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto w-full p-3 ">
@@ -148,7 +159,14 @@ function CommentSection({ postId }) {
             </div>
           </div>
           {comments.map((comment) => {
-            return <Comment key={comment._id} comment={comment} onLike={handleLike} />;
+            return (
+              <Comment
+                key={comment._id}
+                comment={comment}
+                onLike={handleLike}
+                onEdit={handleEdit}
+              />
+            );
           })}
         </>
       )}
