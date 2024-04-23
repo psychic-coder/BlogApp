@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CallToAction from "../Components/CallToAction";
 import CommentSection from "../Components/CommentSection";
+import PostCard from "../Components/PostCard";
 
 function PostPage() {
   //using the below hook we're getting hold of the slug value from the url
@@ -10,6 +11,7 @@ function PostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
+  const [recentPosts,setRecentPosts]=useState(null);
   //console.log(post)
 
   useEffect(() => {
@@ -35,6 +37,21 @@ function PostPage() {
     };
     fetchPost();
   }, [postSlug]);
+
+  useEffect(()=>{
+    try {
+      const fetchRecentPosts=async ()=>{
+        const res=await fetch(`/api/post/getposts?limit=3`);
+        const data=await res.json();
+        if(res.ok){
+            setRecentPosts(data.posts);
+        }
+      };
+      fetchRecentPosts();
+    } catch (error) {
+      console.log(error.message);
+    };
+  },[])
 
 
   if(loading) return (
@@ -63,6 +80,19 @@ function PostPage() {
     <CallToAction/>
     </div>
     <CommentSection postId={post._id}/>
+    <div className="flex flex-col items-center justify-center mb-5">
+      <h1 className="text-xl mt-5">
+        Recent articles
+      </h1>
+      <div className="flex flex-col md:flex-row gap-2 mt-5 justify-center">
+            {
+              recentPosts &&
+              recentPosts.map((post)=>
+                <PostCard key={post._id} post={post}/>
+              )
+            }
+      </div>
+    </div>
   </main>;
 }
 
