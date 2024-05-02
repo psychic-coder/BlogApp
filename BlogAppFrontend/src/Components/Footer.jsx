@@ -5,8 +5,8 @@ import {BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitch} from "react-ico
 
 function FooterComp() {
   return (
-    <Footer container className="border- border-t-[4px] border-teal-300 pt-2">
-      <div className="w-full max-w-7xl mx-auto px-5">
+    <Footer container className="footer-bottom border  border-t-[4px] border-teal-300 pt-2">
+      <div className="w-full  max-w-7xl mx-auto px-5">
         <div className="grid w-full justify-between sm:flex md:grid-cols-1 ">
           <div className="mt-5 ">
             <Link
