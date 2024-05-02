@@ -1,6 +1,6 @@
 import { Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { HiAnnotation, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiUser } from "react-icons/hi";
+import { HiAnnotation, HiArrowSmRight, HiChartBar, HiChartPie, HiDocumentText, HiOutlineUserGroup, HiUser } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux/user/userSlice";
@@ -54,6 +54,16 @@ const dispatch =useDispatch()
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-1 "> 
             {/*we changed the sidebar.item to div as both sidebar.item and link are anchor tag*/}
+            {currentUser && currentUser.isAdmin && 
+          <Sidebar.Item
+          active={tab === "dash" || !tab }
+          icon={HiChartPie}
+          as='div'
+        >
+          <Link to="/dashboard?tab=dash">Dashboard</Link>
+        </Sidebar.Item>
+
+          }
           <Sidebar.Item
             active={tab === "profile"}
             icon={HiUser}
