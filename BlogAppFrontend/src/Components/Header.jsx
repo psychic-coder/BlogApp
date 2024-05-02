@@ -1,9 +1,9 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation ,useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signOutSuccess } from "../redux/user/userSlice";
@@ -12,6 +12,26 @@ import { signOutSuccess } from "../redux/user/userSlice";
 
 
 function Header() {
+  const [searchTerm,setSearchTerm]=useState('');
+  const navigate=useNavigate();
+
+  const location=useLocation();
+
+
+  //http://localhost:5173/search?searchTerm=react
+  //the below console.log gives us the value of searchTerm which is react 
+  //console.log(searchTerm);
+
+  
+  useEffect(()=>{
+    //location.search-->it gives all the data in the current location fro url
+    const urlParams=new URLSearchParams(location.search);
+    //from the below line we're are getting hold of the value of the searchterm from the url parameters
+    const searchTermFromUrl=urlParams.get('searchTerm');
+    if(searchTermFromUrl){
+      setSearchTerm(searchTermFromUrl)
+    }
+  },[location.search])
 
   const dispatch = useDispatch();
   // we are getting hold of the current the user over here
@@ -36,9 +56,17 @@ function Header() {
       console.log(error);
     }
   };
-  
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    const urlParams=new URLSearchParams(location.search);
+    urlParams.set('searchTerm',searchTerm);
+    const searchQuery=urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
+
     /*useLocation is used to get the url of the page we're currently in , it gives the url after the part of the local host */
-  
   const path = useLocation().pathname;
   return (
     <Navbar className="border-b-2">
@@ -51,13 +79,17 @@ function Header() {
         </span>
         Blog
       </Link>
-      <form>
+      <form onSubmit={handleSubmit}>
         {/*the textinput is from flowbite*/}
-        <TextInput
+        <TextInput 
           type="text"
           placeholder="Search.."
           className="hidden lg:inline"
           rightIcon={AiOutlineSearch}
+          value={searchTerm}
+          onChange={(e)=>{
+             setSearchTerm(e.target.value)
+          }}
         />
       </form>
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>

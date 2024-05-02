@@ -14,6 +14,7 @@ import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollToTop from "./Components/ScrollToTop";
+import Search from "./pages/Search";
 
 
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/sign-in" element={<Signin />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/search" element={<Search />} />
         {/*we are making the dashboard private so that the people who are signed in can only access it*/}
         <Route element={<PrivateRoute/>}>
         <Route path="/dashboard" element={<DashBoard />} />
