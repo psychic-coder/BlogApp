@@ -89,23 +89,20 @@ export const google = async (req, res, next) => {
       const { password, ...rest } = user._doc;
       res
         .status(200)
-        .cookie('access_Token', token, {
+        .cookie('access_token', token, {
           httpOnly: true,
         })
         .json(rest);
-    }
-    //as we are signing through google then we have to generate random password because which user can change later on
-    else {
-      // in the below slice method we are getting hold of the last 8 characters
+    } else {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
       const newUser = new User({
         username:
-          name.toLowerCase().split(" ").join("") +
+          name.toLowerCase().split(' ').join('') +
           Math.random().toString(9).slice(-4),
-         email,
+        email,
         password: hashedPassword,
         profilePicture: googlePhotoUrl,
       });
@@ -117,7 +114,7 @@ export const google = async (req, res, next) => {
       const { password, ...rest } = newUser._doc;
       res
         .status(200)
-        .cookie("access_token", token, {
+        .cookie('access_token', token, {
           httpOnly: true,
         })
         .json(rest);
