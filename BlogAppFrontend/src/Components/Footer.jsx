@@ -1,7 +1,7 @@
 import { Footer } from "flowbite-react";
 import React from "react";
 import { Link,useNavigate } from "react-router-dom";
-import {BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitch} from "react-icons/bs"
+import {BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitch,BsLinkedin} from "react-icons/bs"
 
 function FooterComp() {
   return (
@@ -25,11 +25,11 @@ function FooterComp() {
               <Footer.LinkGroup col>
                 {/*the target _blank is used to open the link in a new page*/}
                 <Footer.Link
-                  href="https://www.100jsprojects.com"
+                  href="https://www.linkedin.com/in/rohit-ganguly-42685521b"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  100 JS PROJECTS
+                  LinkedIn
                 </Footer.Link>
                 <Footer.Link
                   href="/about"
@@ -89,11 +89,11 @@ function FooterComp() {
             <Footer.Copyright href="#" by="Rohit's Blog" year={new Date().getFullYear()}/>
      
       <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
-            <Footer.Icon  href='#' icon={BsFacebook}/>
-            <Footer.Icon  href='#' icon={BsInstagram}/>
+            <Footer.Icon  href='https://www.facebook.com/rohit.ganguly.3954' icon={BsFacebook}/>
+            <Footer.Icon  href='https://www.instagram.com/neil.rohit_' icon={BsInstagram}/>
             <Footer.Icon  href='#' icon={BsTwitch}/>
-            <Footer.Icon  href='#' icon={BsGithub}/>
-            <Footer.Icon  href='#' icon={BsDribbble}/>
+            <Footer.Icon  href='https://github.com/psychic-coder' icon={BsGithub}/>
+            <Footer.Icon  href='https://www.linkedin.com/in/rohit-ganguly-42685521b' icon={BsLinkedin}/>
       </div>
       </div>
       </div>
