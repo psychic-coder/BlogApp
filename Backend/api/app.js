@@ -9,6 +9,7 @@ import authRoute from "./routes/authRoute.js";
 import postRoute from "./routes/postRoute.js";
 import commentRoute from "./routes/commentRoute.js";
 
+const __dirname=path.resolve();
 //the below code is written to config the .env file
 dotenv.config();
 
@@ -34,6 +35,11 @@ app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
+
+app.use(express.static(path.join(__dirname,'../../BlogAppFrontend/dist')));
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname,'../../BlogAppFrontend/dist/index.html'));
+});
 
 //its a custom middleware  we created for showing the error
 app.use((err, req, res, next) => {
