@@ -5,16 +5,14 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    //as we are using vite so we use meta.env
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "mean-blog-c6173.firebaseapp.com",
-  projectId: "mean-blog-c6173",
-  storageBucket: "mean-blog-c6173.appspot.com",
-  messagingSenderId: "167747145710",
-  appId: "1:167747145710:web:74f65015669ae6b28e08ff"
+  authDomain: "mern-blog-a2a06.firebaseapp.com",
+  projectId: "mern-blog-a2a06",
+  storageBucket: "mern-blog-a2a06.appspot.com",
+  messagingSenderId: "953832310278",
+  appId: "1:953832310278:web:e2b3e3997d308da8cbe587"
 };
 
 // Initialize Firebase
- const app = initializeApp(firebaseConfig);
- export default app;
-
+const app = initializeApp(firebaseConfig);
+export default app;

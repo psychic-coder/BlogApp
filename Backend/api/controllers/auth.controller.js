@@ -89,7 +89,7 @@ export const google = async (req, res, next) => {
       const { password, ...rest } = user._doc;
       res
         .status(200)
-        .cookie("access_Token", token, {
+        .cookie('access_Token', token, {
           httpOnly: true,
         })
         .json(rest);
@@ -105,13 +105,13 @@ export const google = async (req, res, next) => {
         username:
           name.toLowerCase().split(" ").join("") +
           Math.random().toString(9).slice(-4),
-        email: email,
+         email,
         password: hashedPassword,
         profilePicture: googlePhotoUrl,
       });
       await newUser.save();
       const token = jwt.sign(
-        { id: validUser._id, isAdmin: newUser.isAdmin },
+        { id: newUser._id, isAdmin: newUser.isAdmin },
         process.env.JWT_SECRET
       );
       const { password, ...rest } = newUser._doc;
