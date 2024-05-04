@@ -8,7 +8,7 @@
     "frontend": "cd BlogAppFrontend && npm run dev",
     "backend": "cd Backend && npm run dev",
     "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
-    "build": "npm install --prefix Backend && npm install --prefix BlogAppFrontend"
+    "build": "npm install --prefix Backend && npm install --prefix BlogAppFrontend && npm install"
   },
   "author": "",
   "license": "ISC",
