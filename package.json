@@ -6,13 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd BlogAppFrontend && npm run dev",
-    "backend":"cd Backend && npm run dev",
-    "dev":"concurrently \" npm run frontend\" \"npm run backend\"",
-    "build":"npm install --prefix Backend  && npm install --prefix BlogAppFrontend && npm run dev"
+    "backend": "cd Backend && npm run dev",
+    "dev": "concurrently \" npm run frontend\" \"npm run backend\"",
+    "build": "npm install --prefix Backend  && npm install --prefix BlogAppFrontend && npm run dev"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "concurrently": "^8.2.2"
   }
 }
