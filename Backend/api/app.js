@@ -40,7 +40,7 @@ app.use("/api/comment", commentRoute);
 app.use(express.static(path.resolve(__dirname, "../../BlogAppFrontend/dist")));
 
 // Route for all other requests (catch-all)
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../../BlogAppFrontend/dist/index.html"));
 });
 
