@@ -9,7 +9,7 @@ import authRoute from "./routes/authRoute.js";
 import postRoute from "./routes/postRoute.js";
 import commentRoute from "./routes/commentRoute.js";
 
-const __dirname=path.resolve();
+const __dirname = path.resolve();
 //the below code is written to config the .env file
 dotenv.config();
 
@@ -36,15 +36,12 @@ app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
 
-app.use(express.static(path.join(__dirname, '../../BlogAppFrontend/dist')));
+app.use(express.static(path.join(__dirname, "../../BlogAppFrontend/dist")));
 
-app.get('*', (req, res) => {
-  try {
-    res.sendFile(path.join(__dirname, '../../BlogAppFrontend','dist','index.html'));
-  } catch (err) {
-    console.log('Error sending index.html:', err);
-    res.status(500).send('Internal Server Error');
-  }
+app.get("*", (req, res) => {
+  res.sendFile(
+    path.join(__dirname,"../../BlogAppFrontend/dist/index.html")
+  );
 });
 
 //its a custom middleware  we created for showing the error
