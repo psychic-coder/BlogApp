@@ -36,9 +36,9 @@ app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
 
-app.use(express.static(path.join(__dirname,'../../BlogAppFrontend/dist')));
-app.get('*',(req,res)=>{
-  res.sendFile(path.join(__dirname,'../../BlogAppFrontend/dist/index.html'));
+app.use(express.static(path.join(__dirname, '../../BlogAppFrontend/dist')));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../../BlogAppFrontend/dist', 'index.html'));
 });
 
 //its a custom middleware  we created for showing the error
