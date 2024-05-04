@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd BlogAppFrontend && npm run dev",
     "backend": "cd Backend && npm run dev",
-    "dev": "concurrently \" npm run frontend\" \"npm run backend\"",
-    "build": "npm install --prefix Backend  && npm install --prefix BlogAppFrontend"
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "build": "npm install --prefix Backend && npm install --prefix BlogAppFrontend"
   },
   "author": "",
   "license": "ISC",
