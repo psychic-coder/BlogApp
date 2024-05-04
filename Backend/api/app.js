@@ -39,7 +39,7 @@ app.use("/api/comment", commentRoute);
 app.use(express.static(path.join(__dirname, '../../BlogAppFrontend/dist')));
 
 app.get('*', (req, res) => {
-  res.send(path.join(__dirname, '../../BlogAppFrontend/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '../../BlogAppFrontend/dist', 'index.html'));
 });
 
 //its a custom middleware  we created for showing the error
