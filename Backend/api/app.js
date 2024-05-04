@@ -40,9 +40,9 @@ app.use(express.static(path.join(__dirname, '../../BlogAppFrontend/dist')));
 
 app.get('*', (req, res) => {
   try {
-    res.sendFile(path.join(__dirname, '../../BlogAppFrontend/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../../BlogAppFrontend','dist','index.html'));
   } catch (err) {
-    console.error('Error sending index.html:', err);
+    console.log('Error sending index.html:', err);
     res.status(500).send('Internal Server Error');
   }
 });
