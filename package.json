@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "cd BlogAppFrontend && npm run dev",
     "backend": "cd Backend && npm run dev",
-    "dev": "npm run frontend", 
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
     "build": "npm install --prefix Backend && npm install --prefix BlogAppFrontend && npm install && npm run build --prefix BlogAppFrontend && npm run backend"
   },
   "author": "",
