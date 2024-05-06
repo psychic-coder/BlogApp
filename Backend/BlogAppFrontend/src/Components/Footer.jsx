@@ -32,7 +32,7 @@ function FooterComp() {
                   LinkedIn
                 </Footer.Link>
                 <Footer.Link
-                  href="/about"
+                  href="https://blogapp-idri.onrender.com/about"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
