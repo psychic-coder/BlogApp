@@ -1,11 +1,21 @@
 import { Footer } from "flowbite-react";
 import React from "react";
-import { Link,useNavigate } from "react-router-dom";
-import {BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitch,BsLinkedin} from "react-icons/bs"
+import { Link, useNavigate } from "react-router-dom";
+import {
+  BsDribbble,
+  BsFacebook,
+  BsGithub,
+  BsInstagram,
+  BsTwitch,
+  BsLinkedin,
+} from "react-icons/bs";
 
 function FooterComp() {
   return (
-    <Footer container className="footer-bottom border  border-t-[4px] border-teal-300 pt-2">
+    <Footer
+      container
+      className="footer-bottom border  border-t-[4px] border-teal-300 pt-2"
+    >
       <div className="w-full  max-w-7xl mx-auto px-5">
         <div className="grid w-full justify-between sm:flex md:grid-cols-1 ">
           <div className="mt-5 ">
@@ -31,14 +41,10 @@ function FooterComp() {
                   LinkedIn
                 </Footer.Link>
                 <Footer.Link as="div">
-                  <Link
-                  to="/about"
-                  rel="noopener noreferrer"
-                >
-                  Rohit's Blogs
+                  <Link to="/about" rel="noopener noreferrer">
+                    Rohit's Blogs
                   </Link>
                 </Footer.Link>
-                
               </Footer.LinkGroup>
             </div>
             <div>
@@ -50,7 +56,7 @@ function FooterComp() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                 Github
+                  Github
                 </Footer.Link>
                 <Footer.Link
                   href="https://www.instagram.com/neil.rohit_/"
@@ -59,25 +65,16 @@ function FooterComp() {
                 >
                   Instagram
                 </Footer.Link>
-                
               </Footer.LinkGroup>
             </div>
             <div>
               <Footer.Title title="LEGAL" />
               <Footer.LinkGroup col>
                 {/*the target _blank is used to open the link in a new page*/}
-                <Footer.Link
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
                   Privacy Policy
                 </Footer.Link>
-                <Footer.Link
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
                   Terms &amp; Conditions
                 </Footer.Link>
               </Footer.LinkGroup>
@@ -85,17 +82,33 @@ function FooterComp() {
           </div>
         </div>
         <Footer.Divider />
-      <div className="w-full sm:flex sm:items-center sm:justify-between "> 
-            <Footer.Copyright href="#" by="Rohit's Blog" year={new Date().getFullYear()}/>
-     
-      <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
-            <Footer.Icon  href='https://www.facebook.com/rohit.ganguly.3954' icon={BsFacebook}/>
-            <Footer.Icon  href='https://www.instagram.com/neil.rohit_' icon={BsInstagram}/>
-            <Footer.Icon  href='#' icon={BsTwitch}/>
-            <Footer.Icon  href='https://github.com/psychic-coder' icon={BsGithub}/>
-            <Footer.Icon  href='https://www.linkedin.com/in/rohit-ganguly-42685521b' icon={BsLinkedin}/>
-      </div>
-      </div>
+        <div className="w-full sm:flex sm:items-center sm:justify-between ">
+          <Footer.Copyright
+            href="#"
+            by="Rohit's Blog"
+            year={new Date().getFullYear()}
+          />
+
+          <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
+            <Footer.Icon
+              href="https://www.facebook.com/rohit.ganguly.3954"
+              icon={BsFacebook}
+            />
+            <Footer.Icon
+              href="https://www.instagram.com/neil.rohit_"
+              icon={BsInstagram}
+            />
+            <Footer.Icon href="#" icon={BsTwitch} />
+            <Footer.Icon
+              href="https://github.com/psychic-coder"
+              icon={BsGithub}
+            />
+            <Footer.Icon
+              href="https://www.linkedin.com/in/rohit-ganguly-42685521b"
+              icon={BsLinkedin}
+            />
+          </div>
+        </div>
       </div>
     </Footer>
   );
