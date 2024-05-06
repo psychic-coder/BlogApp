@@ -26,7 +26,6 @@ function FooterComp() {
                 {/*the target _blank is used to open the link in a new page*/}
                 <Footer.Link
                   href="https://www.linkedin.com/in/rohit-ganguly-42685521b"
-                  target="_blank"
                   rel="noopener noreferrer"
                 >
                   LinkedIn
