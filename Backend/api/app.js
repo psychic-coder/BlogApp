@@ -37,11 +37,12 @@ app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
 
 // Serve static files
-app.use(express.static(path.resolve(__dirname, "../../BlogAppFrontend/dist")));
+
 
 // Route for all other requests (catch-all)
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../../BlogAppFrontend/dist/index.html"));
+app.get("/", (req, res) => {
+  app.use(express.static(path.resolve(__dirname, "BlogAppFrontend","dist")));
+  res.sendFile(path.resolve(__dirname, "BlogAppFrontend","dist","index.html"));
 });
 
 // Error handling middleware (should be at the end)
@@ -55,7 +56,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const port = 5000;
+const port =process.env.PORT|| 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
