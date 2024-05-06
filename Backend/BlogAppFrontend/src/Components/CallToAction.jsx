@@ -8,7 +8,7 @@ function CallToAction() {
             <h2 className="text-5xl font-semibold"> Github</h2>
             <p className='text-gray-500 my-2'>All my projects are here </p>
             <Button gradientDuoTone='purpleToPink' className='rounded-tl-xl rounded-bl-none'>
-                <a href="https://www.100jsprojects.com" target='_blank' rel='noopener noreferrer'>
+                <a href="https://github.com/psychic-coder" target='_blank' rel='noopener noreferrer'>
                     Welcome to my Github
                 </a>
             </Button>
