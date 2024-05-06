@@ -1,3 +1,6 @@
+
+Help needed
+good first issue
 While deploying this service
 I am facing an error {"success":false,"statusCode":404,"message":"ENOENT: no such file or directory, stat '/opt/render/project/BlogAppFrontend/dist/index.html'"}
 In command window--->
