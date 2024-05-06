@@ -31,12 +31,13 @@ function FooterComp() {
                 >
                   LinkedIn
                 </Footer.Link>
-                <Footer.Link
-                  href="https://blogapp-idri.onrender.com/about"
-                  target="_blank"
+                <Footer.Link as="div">
+                  <Link
+                  to="/about"
                   rel="noopener noreferrer"
                 >
                   Rohit's Blogs
+                  </Link>
                 </Footer.Link>
                 
               </Footer.LinkGroup>
