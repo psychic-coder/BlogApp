@@ -1,18 +1,15 @@
+import "dotenv/config";
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
 import postRoute from "./routes/postRoute.js";
 import commentRoute from "./routes/commentRoute.js";
 import autocompleteRoute from "./routes/autocompleteRoute.js";
-
 const __dirname = path.resolve();
-//the below code is written to config the .env file
-dotenv.config();
 
 mongoose
   .connect(process.env.MONGO)
@@ -56,11 +53,6 @@ app.use((err, req, res, next) => {
     statusCode,
     message,
   });
-});
-
-const port = 5000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
 });
 
 export default app;
