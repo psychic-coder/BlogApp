@@ -8,6 +8,7 @@ import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
 import postRoute from "./routes/postRoute.js";
 import commentRoute from "./routes/commentRoute.js";
+import autocompleteRoute from "./routes/autocompleteRoute.js";
 
 const __dirname = path.resolve();
 //the below code is written to config the .env file
@@ -35,6 +36,7 @@ app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
+app.use("/api/autocomplete", autocompleteRoute);
 
 // Serve static files
 

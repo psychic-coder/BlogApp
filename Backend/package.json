@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon app.js",
-    "build":"npm install && npm install --prefix BlogAppFrontend && npm run build ----prefix BlogAppFrontend"
+    "build": "npm install && npm install --prefix BlogAppFrontend && npm run build ----prefix BlogAppFrontend"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -20,7 +20,8 @@
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.1",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "openai": "^6.33.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

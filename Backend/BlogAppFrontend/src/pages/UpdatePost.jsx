@@ -1,4 +1,4 @@
-import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
+import { Alert, Button, FileInput, Select } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {
@@ -7,12 +7,14 @@ import {
   ref,
   uploadBytesResumable,
 } from 'firebase/storage';
-import  app  from '../firebase';
+import app from '../firebase';
 import { useEffect, useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import AutocompleteInput from '../Components/AutocompleteInput';
+import { useAutocomplete } from '../hooks/useAutocomplete';
 
 export default function UpdatePost() {
   const [file, setFile] = useState(null);
@@ -23,7 +25,15 @@ export default function UpdatePost() {
   const { postId } = useParams();
 
   const navigate = useNavigate();
-    const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
+
+  // Content autocomplete
+  const {
+    suggestion: contentSuggestion,
+    isLoading: contentLoading,
+    fetchSuggestion: fetchContentSuggestion,
+    clearSuggestion: clearContentSuggestion,
+  } = useAutocomplete('content');
 
   useEffect(() => {
     try {
@@ -83,6 +93,7 @@ export default function UpdatePost() {
       console.log(error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -107,21 +118,33 @@ export default function UpdatePost() {
       setPublishError('Something went wrong');
     }
   };
+
+  // Strip HTML tags to get plain text for the AI context
+  const getPlainText = (html) => {
+    const div = document.createElement('div');
+    div.innerHTML = html || '';
+    return div.innerText || div.textContent || '';
+  };
+
+  const acceptContentSuggestion = () => {
+    if (!contentSuggestion) return;
+    const currentContent = formData.content || '';
+    const newContent = currentContent + `<p>${contentSuggestion}</p>`;
+    setFormData({ ...formData, content: newContent });
+    clearContentSuggestion();
+  };
+
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Update post</h1>
       <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
-        <div className='flex flex-col gap-4 sm:flex-row justify-between'>
-          <TextInput
-            type='text'
+        <div className='flex flex-col gap-4 sm:flex-row justify-between items-start'>
+          <AutocompleteInput
+            id='title'
             placeholder='Title'
             required
-            id='title'
-            className='flex-1'
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
-            value={formData.title}
+            value={formData.title || ''}
+            onChange={(val) => setFormData({ ...formData, title: val })}
           />
           <Select
             onChange={(e) =>
@@ -169,6 +192,8 @@ export default function UpdatePost() {
             className='w-full h-72 object-cover'
           />
         )}
+
+        {/* Rich text editor */}
         <ReactQuill
           theme='snow'
           value={formData.content}
@@ -177,8 +202,50 @@ export default function UpdatePost() {
           required
           onChange={(value) => {
             setFormData({ ...formData, content: value });
+            clearContentSuggestion();
           }}
         />
+
+        {/* Content autocomplete suggestion */}
+        {contentSuggestion && (
+          <div className='rounded-lg border border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20 p-3'>
+            <p className='text-xs font-semibold text-purple-600 dark:text-purple-400 mb-1'>
+              ✨ AI Suggestion
+            </p>
+            <p className='text-sm text-gray-700 dark:text-gray-300 italic'>
+              {contentSuggestion}
+            </p>
+            <div className='mt-2 flex gap-2'>
+              <button
+                type='button'
+                onClick={acceptContentSuggestion}
+                className='rounded-md bg-purple-600 px-3 py-1 text-xs font-medium text-white hover:bg-purple-700 transition-colors'
+              >
+                ✅ Insert
+              </button>
+              <button
+                type='button'
+                onClick={clearContentSuggestion}
+                className='rounded-md bg-gray-200 dark:bg-gray-700 px-3 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors'
+              >
+                ✕ Dismiss
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Content AI suggest button */}
+        <div className='flex justify-end -mt-2'>
+          <button
+            type='button'
+            onClick={() => fetchContentSuggestion(getPlainText(formData.content))}
+            disabled={contentLoading || !formData.content || getPlainText(formData.content).trim().length < 10}
+            className='flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2 text-sm font-medium text-white shadow hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all'
+          >
+            {contentLoading ? '✨ Thinking…' : '✨ AI Continue Content'}
+          </button>
+        </div>
+
         <Button type='submit' gradientDuoTone='purpleToPink'>
           Update post
         </Button>

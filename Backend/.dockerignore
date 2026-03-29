@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log*
+*.log
+
+# Frontend node_modules (built in Docker stage 1)
+BlogAppFrontend/node_modules
+BlogAppFrontend/dist
+
+# Environment secrets
+.env
+*.env
+
+# Editor / OS files
+.DS_Store
+.vscode
+.idea
