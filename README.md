@@ -1,135 +1,102 @@
 # Personal Tech Blog App
 
-A full-stack personal tech blog platform built with the **MERN** stack (MongoDB, Express.js, React.js, Node.js). The backend serves the REST API and the built React frontend as static files.
+A full-stack personal tech blog platform built with the **MERN** stack (MongoDB, Express.js, React.js, Node.js). 
+
+This repository features:
+- **Backend**: Express.js REST API with JWT authentication.
+- **Frontend**: React.js (Vite) with AI-powered content autocomplete.
+- **Database**: MongoDB.
+- **Infrastructure**: Docker & Docker Compose support.
 
 ---
 
-## 🚀 Running with Docker (Recommended)
+## 📂 Project Structure
 
-This is the quickest way to get the entire stack (app + MongoDB) running with a single command.
+```text
+BlogApp/
+├── BlogAppFrontend/       # React/Vite frontend source
+├── Backend/               # Express app, routes, controllers, models
+├── docker-compose.yml    # Orchestrates app + MongoDB services
+├── .env.example          # Environment variable template
+├── package.json          # Root scripts for project management
+└── docs/                 # Project documentation
+```
 
-### Prerequisites
-- [Docker](https://docs.docker.com/get-docker/) installed and running
-- [Docker Compose](https://docs.docker.com/compose/install/) (included with Docker Desktop)
+---
 
-### Steps
+## 🚀 Quick Start (Docker)
 
-**1. Clone the repository**
+The quickest way to get the entire stack (app + MongoDB) running.
+
+**1. Clone and Navigate**
 ```bash
 git clone <your-repo-url>
 cd BlogApp
 ```
 
-**2. Set up environment variables**
+**2. Environment Setup**
 ```bash
 cp .env.example .env
 ```
-Open `.env` and fill in your values (at minimum set a strong `JWT_SECRET`):
-```env
-MONGO=mongodb://mongo:27017/blogapp
-JWT_SECRET=your_long_random_secret_here
-PORT=3000
-```
+Edit `.env` and provide your `JWT_SECRET` and other configuration.
 
-**3. Build and start all services**
+**3. Launch**
 ```bash
 docker-compose up --build
 ```
-
-This will:
-- Build the React/Vite frontend
-- Build the Express backend image
-- Start a MongoDB container with a persistent volume
-- Start the app server
-
-**4. Open the app**
-
-Visit **http://localhost:3000** in your browser.
-
-### Useful Docker commands
-
-| Command | Description |
-|---|---|
-| `docker-compose up --build` | Build images and start all services |
-| `docker-compose up -d` | Start in detached (background) mode |
-| `docker-compose down` | Stop and remove containers |
-| `docker-compose down -v` | Stop containers and wipe the database volume |
-| `docker-compose logs -f app` | Stream logs from the app container |
+Visit **http://localhost:3000** to see the app.
 
 ---
 
-## 🛠 Running Locally (Without Docker)
+## 🛠 Local Development (Manual)
 
 ### Prerequisites
 - Node.js >= 14
-- A running MongoDB instance (local or [MongoDB Atlas](https://www.mongodb.com/atlas))
+- MongoDB (Local or Atlas)
 
 ### Steps
 
-**1. Clone the repository**
+**1. Install all dependencies**
 ```bash
-git clone <your-repo-url>
-cd BlogApp
+npm run install:all
 ```
 
-**2. Set up environment variables**
+**2. Set up environment**
+Create `.env` in the root and in `Backend/` as needed.
+
+**3. Start Development Servers**
+You can run both frontend and backend concurrently from the root:
 ```bash
-cp .env.example .env
-# Edit .env with your MongoDB URI and JWT secret
+npm run dev
 ```
 
-**3. Install backend dependencies**
-```bash
-cd Backend
-npm install
-```
-
-**4. Build and install the frontend**
-```bash
-cd BlogAppFrontend
-npm install
-npm run build
-cd ..
-```
-
-**5. Start the server**
-```bash
-npm start
-```
-
-Visit **http://localhost:3000**.
-
----
-
-## 📁 Project Structure
-
-```
-BlogApp/
-├── docker-compose.yml          # Orchestrates app + MongoDB services
-├── .env.example                # Environment variable template
-└── Backend/
-    ├── Dockerfile              # Multi-stage build (frontend → backend)
-    ├── api/                    # Express app, routes, controllers, models
-    ├── bin/www                 # Server entry point
-    └── BlogAppFrontend/        # React/Vite frontend source
-```
+Alternatively, run them separately:
+- **Backend**: `npm run dev:backend`
+- **Frontend**: `npm run dev:frontend`
 
 ---
 
 ## ✨ Features
 
-- **Tech Insights** — Articles and analyses on emerging technologies
-- **Personal Reflections** — Author perspectives on tech and society
-- **User Auth** — JWT-based sign-up, sign-in, and session management
-- **Post Management** — Create, edit, and delete blog posts
-- **Comments** — Readers can comment on posts
-- **Admin Dashboard** — Manage users and posts
+- **AI Autocomplete** — Leverage AI to help write blog titles and content.
+- **JWT Auth** — Secure sign-up/sign-in and protected routes.
+- **Post Management** — Full CRUD for blog posts.
+- **Responsive UI** — Modern, mobile-friendly design.
+- **Admin Portal** — Manage users, posts, and comments.
+
+---
+
+## 📄 Documentation
+
+Detailed documentation can be found in the `docs/` folder:
+- [API Reference](docs/API.md)
+- [Contributing Guide](CONTRIBUTING.md)
 
 ---
 
 ## 📄 License
 
-Licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE.md).
 
 ---
 
