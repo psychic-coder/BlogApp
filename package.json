@@ -5,9 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"npm run build --prefix Backend",
-    "start":"npm run dev --prefix Backend "
-    
+    "dev:backend": "npm run dev --prefix Backend",
+    "dev:frontend": "npm run dev --prefix BlogAppFrontend",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "build:backend": "npm run build --prefix Backend",
+    "build:frontend": "npm run build --prefix BlogAppFrontend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "install:all": "npm install && npm install --prefix Backend && npm install --prefix BlogAppFrontend"
   },
   "author": "",
   "license": "ISC"
