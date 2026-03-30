@@ -35,6 +35,11 @@ app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
 app.use("/api/autocomplete", autocompleteRoute);
 
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
+});
+
 // Serve static files
 
 
