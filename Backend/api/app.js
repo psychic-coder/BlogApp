@@ -40,8 +40,9 @@ app.use("/api/autocomplete", autocompleteRoute);
 
 // Route for all other requests (catch-all)
 app.get("/", (req, res) => {
-  app.use(express.static(path.resolve(__dirname, "BlogAppFrontend","dist")));
-  res.sendFile(path.resolve(__dirname, "BlogAppFrontend","dist","index.html"));
+  const frontendPath = path.resolve(__dirname, "..", "BlogAppFrontend", "dist");
+  app.use(express.static(frontendPath));
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 // Error handling middleware (should be at the end)
