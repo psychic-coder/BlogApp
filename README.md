@@ -58,7 +58,6 @@ npm run dev
 5. **Environment Variables**:
     - `MONGO`: Your MongoDB connection string.
     - `JWT_SECRET`: A secure random string.
-    - `OPENAI_API_KEY`: Your OpenAI/OpenRouter API key.
     - `FRONTEND_URL`: Your Vercel frontend URL.
 
 ### Frontend (Vercel)
