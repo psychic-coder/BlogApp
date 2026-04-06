@@ -4,11 +4,16 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import mongoose from "mongoose";
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
+
 import userRoute from "./routes/userRoute.js";
 import authRoute from "./routes/authRoute.js";
 import postRoute from "./routes/postRoute.js";
 import commentRoute from "./routes/commentRoute.js";
 import autocompleteRoute from "./routes/autocompleteRoute.js";
+
 const __dirname = path.resolve();
 
 mongoose
@@ -22,35 +27,40 @@ mongoose
 
 var app = express();
 
+// Middleware
+app.use(helmet()); // Security headers
+app.use(compression()); // Compress responses
+
+// CORS configuration - allow requests from Vercel frontend
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "http://localhost:5173", // URL from Vercel
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(logger("dev"));
-//this is used to send data to the json
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//we have imported the userRoutes first on the top
+// API Routes
 app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
 app.use("/api/autocomplete", autocompleteRoute);
 
-// Health check endpoint
+// Health check endpoint for Render
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
-// Serve static files
-
-
-// Route for all other requests (catch-all)
+// For Render deployment serving index.html on root
 app.get("/", (req, res) => {
-  const frontendPath = path.resolve(__dirname, "..", "BlogAppFrontend", "dist");
-  app.use(express.static(frontendPath));
-  res.sendFile(path.join(frontendPath, "index.html"));
+  res.json({ message: "API is running. Frontend should be on Vercel." });
 });
 
-// Error handling middleware (should be at the end)
+// Error handling middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server error";
@@ -62,3 +72,4 @@ app.use((err, req, res, next) => {
 });
 
 export default app;
+

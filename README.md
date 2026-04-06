@@ -1,12 +1,11 @@
-# Personal Tech Blog App
+#Personal Tech Blog App
 
 A full-stack personal tech blog platform built with the **MERN** stack (MongoDB, Express.js, React.js, Node.js). 
 
 This repository features:
-- **Backend**: Express.js REST API with JWT authentication.
-- **Frontend**: React.js (Vite) with AI-powered content autocomplete.
-- **Database**: MongoDB.
-- **Infrastructure**: Docker & Docker Compose support.
+- **Backend**: Express.js REST API with JWT authentication (Hosted on Render.com).
+- **Frontend**: React.js (Vite) with AI-powered content autocomplete (Hosted on Vercel).
+- **Database**: MongoDB (Atlas).
 
 ---
 
@@ -14,45 +13,21 @@ This repository features:
 
 ```text
 BlogApp/
-├── BlogAppFrontend/       # React/Vite frontend source
-├── Backend/               # Express app, routes, controllers, models
-├── docker-compose.yml    # Orchestrates app + MongoDB services
-├── .env.example          # Environment variable template
-├── package.json          # Root scripts for project management
-└── docs/                 # Project documentation
+├── BlogAppFrontend/       # React/Vite frontend source (Vercel)
+├── Backend/               # Express app, routes, controllers, models (Render.com)
+├── vercel.json            # Vercel configuration for API proxying
+├── .env.example           # Environment variable template
+└── docs/                  # Project documentation
 ```
 
 ---
 
-## 🚀 Quick Start (Docker)
-
-The quickest way to get the entire stack (app + MongoDB) running.
-
-**1. Clone and Navigate**
-```bash
-git clone <your-repo-url>
-cd BlogApp
-```
-
-**2. Environment Setup**
-```bash
-cp .env.example .env
-```
-Edit `.env` and provide your `JWT_SECRET` and other configuration.
-
-**3. Launch**
-```bash
-docker-compose up --build
-```
-Visit **http://localhost:3000** to see the app.
-
----
-
-## 🛠 Local Development (Manual)
+## 🛠 Local Development
 
 ### Prerequisites
 - Node.js >= 14
 - MongoDB (Local or Atlas)
+- OpenAI API Key
 
 ### Steps
 
@@ -62,35 +37,51 @@ npm run install:all
 ```
 
 **2. Set up environment**
-Create `.env` in the root and in `Backend/` as needed.
+Create `.env` in `Backend/` and `BlogAppFrontend/` using their respective `.env.example` templates.
 
 **3. Start Development Servers**
-You can run both frontend and backend concurrently from the root:
+Run both frontend and backend concurrently:
 ```bash
 npm run dev
 ```
 
-Alternatively, run them separately:
-- **Backend**: `npm run dev:backend`
-- **Frontend**: `npm run dev:frontend`
+---
+
+## 🚀 Deployment
+
+### Backend (Render.com)
+
+1. **Create a New Web Service** on Render.
+2. **Connect your Repository** and set the **Root Directory** to `Backend`.
+3. **Build Command**: `npm install`
+4. **Start Command**: `npm start`
+5. **Environment Variables**:
+    - `MONGO`: Your MongoDB connection string.
+    - `JWT_SECRET`: A secure random string.
+    - `OPENAI_API_KEY`: Your OpenAI/OpenRouter API key.
+    - `FRONTEND_URL`: Your Vercel frontend URL.
+
+### Frontend (Vercel)
+
+1. **Create a New Project** on Vercel.
+2. **Standard Vercel Configuration**: 
+    - Framework: Vite
+    - Root Directory: `BlogAppFrontend`
+3. **Build Command**: `npm run build`
+4. **Environment Variables**:
+    - `VITE_FIREBASE_API_KEY`: Your Firebase API key.
+    - `VITE_API_BASE_URL`: `/api`
+5. **Proxy Configuration**: 
+    - Update `BlogAppFrontend/vercel.json` with your actual Render backend URL before deploying.
 
 ---
 
 ## ✨ Features
 
-- **AI Autocomplete** — Leverage AI to help write blog titles and content.
-- **JWT Auth** — Secure sign-up/sign-in and protected routes.
-- **Post Management** — Full CRUD for blog posts.
-- **Responsive UI** — Modern, mobile-friendly design.
-- **Admin Portal** — Manage users, posts, and comments.
-
----
-
-## 📄 Documentation
-
-Detailed documentation can be found in the `docs/` folder:
-- [API Reference](docs/API.md)
-- [Contributing Guide](CONTRIBUTING.md)
+- **AI Autocomplete** — Write smarter with AI help.
+- **JWT Auth** — Secure user accounts.
+- **Admin Portal** — Manage your blog content and users.
+- **Responsive UI** — Fully mobile-friendly.
 
 ---
 
@@ -102,4 +93,4 @@ This project is licensed under the [MIT License](LICENSE.md).
 
 ## 👤 Author
 
-**Rohit Ganguly** — MERN stack developer passionate about technology and its role in society.
+**Rohit Ganguly** — MERN stack developer.
